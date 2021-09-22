@@ -1,0 +1,30 @@
+<h1><%= @album.title %> Reviews</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <%= live_modal @socket, TeacherWeb.ReviewLive.FormComponent,
+    id: @review.id || :new,
+    title: @page_title,
+    action: @live_action,
+    album: @album,
+    review: @review,
+    return_to: Routes.review_index_path(@socket, :index, @album) %>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Reviews</th>
+
+    </tr>
+  </thead>
+  <tbody id="reviews">
+    <%= for review <- @reviews do %>
+      <tr id="review-<%= review.id %>">
+        <td><%= review.body %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "Add Review", to: Routes.review_index_path(@socket, :new, @album) %></span> |
+<span><%= live_patch "Back", to: Routes.album_show_path(@socket, :show, @album) %></span>
